@@ -42,11 +42,12 @@ class App extends Component {
 
 class Organization extends Component {
   render() {
+    var orga_iegh = Number(this.props.data.iegh).toFixed(1);
     return (
       <div className="organization">
         <h2>{this.props.data.name}</h2>
         <ul>
-          <li>IEGH: {this.props.data.iegh}</li>
+          <li>IEGH: { orga_iegh } </li>
         </ul>
       </div>
     )
