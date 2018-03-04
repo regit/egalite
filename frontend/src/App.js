@@ -17,7 +17,30 @@ class App extends Component {
   componentDidMount() {
         axios.get('http://localhost:8080/' + 'api/organization/')
       .then(res => {
-        this.setState({ organizations: res.data });
+         var orgas = res.data;
+         var orga_best = res.data[0];
+         var orga_worse = undefined;
+         var orga_best_iehg = 0;
+         var orga_worse_iehg = 100;
+         var iegh_mean = 0;
+         var i;
+         for (i = 0; i < orgas.length; i++) {
+           iegh_mean += orgas[i].iegh;
+           if (orgas[i].iegh > orga_best_iehg) {
+             orga_best_iehg = orgas[i].iegh;
+             orga_best = orgas[i];
+           }
+           if (orgas[i].iegh < orga_worse_iehg) {
+             orga_worse_iehg = orgas[i].iegh;
+             orga_worse = orgas[i];
+           }
+         }
+         iegh_mean = iegh_mean / orgas.length;
+         orga_worse_iehg = Number(orga_worse_iehg).toFixed(1);
+         orga_best_iehg = Number(orga_best_iehg).toFixed(1);
+         this.setState({ organizations: res.data });
+         const gdata = <DataInBrief orga_worse={orga_worse} orga_best={orga_best} orgas_count={orgas.length} iegh_mean={iegh_mean} />;
+         ReactDOM.render(gdata, document.getElementById('in-brief'));
       });
   }
 
@@ -47,17 +70,18 @@ class App extends Component {
               <div className="card">
                 <div className="card-body">
                   <h3 className="card-title">Contribuer</h3>
-                  <p className="card-text">
-                    <ul>
-                      <li>Ajouter son organisation</li>
-                      <li>Proposer une mise à jour</li>
-                      <li>Faire évoluer le site</li>
-                    </ul>
-                  </p>
+                  <ul>
+                    <li>Ajouter son organisation</li>
+                    <li>Proposer une mise à jour</li>
+                    <li>Faire évoluer le site</li>
+                  </ul>
                 </div>
               </div>
             </div>
             <div className="col-sm-4">
+              <h2>En bref</h2>
+                <div id="in-brief"></div>
+
               <h2>Dernières Entrées</h2>
               <div className="organizations-list">
                 {this.state.organizations.map(function(orga) {
@@ -76,6 +100,8 @@ class App extends Component {
     );
   }
 }
+
+
 
 class Organization extends Component {
   constructor(props) {
@@ -106,7 +132,6 @@ class Organization extends Component {
 
 class OrganizationData extends Component {
   render() {
-    console.log(this.props.data);
     var women_global_ratio = Number(100 - this.props.data.global_male_ratio).toFixed(1);
     var men_global_ratio = Number(this.props.data.global_male_ratio).toFixed(1);
     var women_director_ratio = Number(100 * this.props.data.direction_female / (this.props.data.direction_female + this.props.data.direction_male)).toFixed(1);
@@ -116,14 +141,12 @@ class OrganizationData extends Component {
     return(
       <div className="card">
         <div className="card-body">
-          <h4 className="card-title">{this.props.orga.name} (IEHG : {iehg})</h4>
-           <p class="card-text">
-	     <dl className="row">
-               <dt className="col-md-6">Part de femmes dans l'effectif global</dt><dd className="col-md-6">{women_global_ratio} %</dd>
-               <dt className="col-md-6">Part de femmes directeurs</dt><dd className="col-md-6">{women_director_ratio} %</dd>
-               <dt className="col-md-6">Composition de la direction</dt><dd className="col-md-6">{this.props.data.direction_female} femme(s) et {this.props.data.direction_male} hommes</dd>
-             </dl>
-	   </p>
+           <h4 className="card-title">{this.props.orga.name} (IEHG : {iehg})</h4>
+	   <dl className="row">
+             <dt className="col-md-6">Part de femmes dans l'effectif global</dt><dd className="col-md-6">{women_global_ratio} %</dd>
+             <dt className="col-md-6">Part de femmes directeurs</dt><dd className="col-md-6">{women_director_ratio} %</dd>
+             <dt className="col-md-6">Composition de la direction</dt><dd className="col-md-6">{this.props.data.direction_female} femme(s) et {this.props.data.direction_male} hommes</dd>
+           </dl>
            <div className="row">
              <div className="col-md" id="global">
                <DataDonuts data={global_data} title='Global' />
@@ -132,7 +155,7 @@ class OrganizationData extends Component {
                <DataDonuts data={direction_data} title='Direction' />
              </div>
            </div>
-           <p style={{'font-size': '80%'}} className="text-center">Données: année {this.props.data.year}.</p>
+           <p style={{'fontSize': '80%'}} className="text-center">Données: année {this.props.data.year}.</p>
         </div>
       </div>
     )
@@ -143,6 +166,23 @@ class DataDonuts extends Component {
   render() {
     return(
       <C3Chart data={{ json:this.props.data, 'type': 'donut' }} donut={{'title':this.props.title }} />
+    )
+  }
+}
+
+class DataInBrief extends Component {
+  render() {
+    return(
+      <dl className="row">
+         <dt className="col-md-6">Organisations référencées</dt>
+         <dd className="col-md-6">{this.props.orgas_count}</dd>
+         <dt className="col-md-6">IEHG moyen</dt>
+         <dd className="col-md-6">{Number(this.props.iegh_mean).toFixed(1)}</dd>
+         <dt className="col-md-6">Pire organisation</dt>
+         <dd className="col-md-6">{this.props.orga_worse.name} avec {Number(this.props.orga_worse.iegh).toFixed(1)}</dd>
+         <dt className="col-md-6">Meilleure organisation</dt>
+         <dd className="col-md-6">{this.props.orga_best.name} avec {Number(this.props.orga_best.iegh).toFixed(1)}</dd>
+       </dl>
     )
   }
 }
