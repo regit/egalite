@@ -38,7 +38,12 @@ class OrganizationData(models.Model):
     global_male_ratio = models.FloatField()
     employees_count =  models.PositiveIntegerField(null = True, blank = True)
     organization = models.ForeignKey(Organization, on_delete = models.CASCADE)
+    iehg = models.FloatField()
     # TODO approved and author 
+
+    def __init__(self, *args, **kwargs):
+        super(OrganizationData, self).__init__(*args, **kwargs)
+        self.iehg = self.get_iegh()
 
     def get_direction_female_ratio(self):
         if self.direction_female == 0:

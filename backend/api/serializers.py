@@ -6,8 +6,8 @@ from api.models import Organization, OrganizationData
 class OrganizationDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrganizationData
-        fields = ('pk', 'organization', 'created_date', 'year', 'direction_male', 'direction_female', 'global_male_ratio')
-        read_only_fields = ('pk', 'created_date', 'year', 'direction_male', 'direction_female', 'global_male_ratio')
+        fields = ('pk', 'organization', 'iehg', 'created_date', 'year', 'direction_male', 'direction_female', 'global_male_ratio')
+        read_only_fields = ('pk', 'created_date', 'iehg', 'year', 'direction_male', 'direction_female', 'global_male_ratio')
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
