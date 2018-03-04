@@ -106,7 +106,7 @@ class OrganizationData extends Component {
              <dt>Part de femmes directeurs</dt><dd>{women_director_ratio} %</dd>
              <dt>Composition de la direction</dt><dd>{this.props.data.direction_female} femme(s) et {this.props.data.direction_male} hommes</dd>
            </dl>
-           <p style={{'font-size': '80%'}}>Données: {this.props.data.year}.</p>
+           <p style={{'font-size': '80%'}} className="text-center">Données: année {this.props.data.year}.</p>
         </div>
       </div>
     )
