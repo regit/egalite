@@ -12,13 +12,17 @@ class OrganizationDataSerializer(serializers.ModelSerializer):
 
 class OrganizationSerializer(serializers.ModelSerializer):
     iegh = serializers.SerializerMethodField('last_iegh')
+    latest_data_id = serializers.SerializerMethodField('latest_data_id')
     class Meta:
         model = Organization
-        fields = ('pk', 'name', 'siret', 'created_date', 'iegh')
-        read_only_fields = ('pk', 'name', 'siret', 'created_date', 'iegh')
+        fields = ('pk', 'name', 'siret', 'created_date', 'iegh', 'latest_data_id')
+        read_only_fields = ('pk', 'name', 'siret', 'created_date', 'iegh', 'latest_data_id')
 
     def last_iegh(self, orga):
         return orga.last_iegh()
+
+    def latest_data_id(self, orga):
+        return orga.latest_data_id()
 
 
 class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):

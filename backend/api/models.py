@@ -19,9 +19,16 @@ class Organization(models.Model):
         else:
             return None
 
+    def latest_data_id(self):
+        data = self.last_data()
+        if not data:
+            return None
+        return data.pk
+
     def last_iegh(self):
         data = self.last_data()
         return data.get_iegh()
+
 
 class OrganizationData(models.Model):
     created_date = models.DateTimeField('date created')
