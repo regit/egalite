@@ -82,7 +82,7 @@ class Organization extends Component {
       <div className="organization">
         <h5 onClick={this.handleClick}>{this.props.data.name}</h5>
         <div className="progress">
-          <div className="progress-bar" role="progressbar" style={{ width: orga_iegh + '%' }} aria-valuenow="{ orga_iegh}" aria-valuemin="0" aria-valuemax="100">{ orga_iegh }%</div>
+          <div className="progress-bar" role="progressbar" style={{ width: orga_iegh + '%' }} aria-valuenow="{ orga_iegh}" aria-valuemin="0" aria-valuemax="100">{ orga_iegh }</div>
         </div>
       </div>
     )
