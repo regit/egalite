@@ -28,13 +28,14 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">L'égalité c'est maintenant</h1>
         </header>
-        <div className="container">
+
+        <div className="container-fluid">
           <div className="row">
-            <div className="col-sm-4">
-              <div className="panel">
-                <div className="panel-heading"><h3 className="panel-title">Qu'est ce que l'IEHG ?</h3></div>
-                <div className="panel-body">
-                 <p className="text-justify">
+            <div className="col-sm-3">
+              <div className="card">
+                <div className="card-body">
+                <h3 className="card-title">Qu'est ce que l'IEHG ?</h3>
+                 <p className="card-text text-justify">
                    L'Indice d'Égalité Hiérarchique par Genre (IEHG) est une mesure de l'égalité
                    des chances de promotion au sein d'une organisation. Il mesure l'écart entre
                    la répartition globale des sexes et la composition des instances dirigeantes (comité exécutif, secrétariat général).
@@ -54,10 +55,11 @@ class App extends Component {
                 })}
               </div>
             </div>
-            <div className="col-sm-4 organization-detail" id="orga-detail">
+            <div className="col-sm-5 organization-detail" id="orga-detail">
             </div>
           </div>
         </div>
+      <div className="App-footer">Copyright 2018, Olya Ranguelova et Éric Leblond</div>
       </div>
     );
   }
@@ -100,16 +102,16 @@ class OrganizationData extends Component {
     var direction_data = {'Homme': this.props.data.direction_male, 'Femme': this.props.data.direction_female};
     var global_data = {'Homme': men_global_ratio, 'Femme': women_global_ratio };
     return(
-      <div className="panel">
-        <div className="panel-heading">
-          <h4 className="panel-title">{this.props.orga.name} (IEHG : {iehg})</h4>
-        </div>
-        <div className="panel-body">
-           <dl className="dl-horizontal text-left">
-             <dt>Part de femmes dans l'effectif global</dt><dd>{women_global_ratio} %</dd>
-             <dt>Part de femmes directeurs</dt><dd>{women_director_ratio} %</dd>
-             <dt>Composition de la direction</dt><dd>{this.props.data.direction_female} femme(s) et {this.props.data.direction_male} hommes</dd>
-           </dl>
+      <div className="card">
+        <div className="card-body">
+          <h4 className="card-title">{this.props.orga.name} (IEHG : {iehg})</h4>
+           <p class="card-text">
+	     <dl className="dl-horizontal text-left">
+               <dt>Part de femmes dans l'effectif global</dt><dd>{women_global_ratio} %</dd>
+               <dt>Part de femmes directeurs</dt><dd>{women_director_ratio} %</dd>
+               <dt>Composition de la direction</dt><dd>{this.props.data.direction_female} femme(s) et {this.props.data.direction_male} hommes</dd>
+             </dl>
+	   </p>
            <div className="row">
              <div className="col-md" id="global">
                <DataDonuts data={global_data} title='Global' />

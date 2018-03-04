@@ -1,5 +1,13 @@
-.App {
+.App header, .App h2, .App h3, .App h4, .App h5 {
   text-align: center;
+}
+
+.App {
+  text-align: left;
+}
+
+.App header {
+  margin-bottom: 20px;
 }
 
 .App-logo {
@@ -20,6 +28,13 @@
 
 .App-intro {
   font-size: large;
+}
+
+.App-footer {
+  margin-top: 30px;
+  text-align: center;
+  text-width: 100%;
+  font-size: 80%;
 }
 
 @keyframes App-logo-spin {
