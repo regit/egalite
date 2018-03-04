@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import C3Chart from 'react-c3js';
 import logo from './logo.svg';
 import './App.css';
 
@@ -93,8 +94,11 @@ class OrganizationData extends Component {
   render() {
     console.log(this.props.data);
     var women_global_ratio = Number(100 - this.props.data.global_male_ratio).toFixed(1);
+    var men_global_ratio = Number(this.props.data.global_male_ratio).toFixed(1);
     var women_director_ratio = Number(100 * this.props.data.direction_female / (this.props.data.direction_female + this.props.data.direction_male)).toFixed(1);
     var iehg = Number(this.props.data.iehg).toFixed(1);
+    var direction_data = {'Homme': this.props.data.direction_male, 'Femme': this.props.data.direction_female};
+    var global_data = {'Homme': men_global_ratio, 'Femme': women_global_ratio };
     return(
       <div className="panel">
         <div className="panel-heading">
@@ -106,9 +110,25 @@ class OrganizationData extends Component {
              <dt>Part de femmes directeurs</dt><dd>{women_director_ratio} %</dd>
              <dt>Composition de la direction</dt><dd>{this.props.data.direction_female} femme(s) et {this.props.data.direction_male} hommes</dd>
            </dl>
+           <div className="row">
+             <div className="col-md" id="global">
+               <DataDonuts data={global_data} title='Global' />
+             </div>
+             <div className="col-md" id="direction">
+               <DataDonuts data={direction_data} title='Direction' />
+             </div>
+           </div>
            <p style={{'font-size': '80%'}} className="text-center">Données: année {this.props.data.year}.</p>
         </div>
       </div>
+    )
+  }
+}
+
+class DataDonuts extends Component {
+  render() {
+    return(
+      <C3Chart data={{ json:this.props.data, 'type': 'donut' }} donut={{'title':this.props.title }} />
     )
   }
 }
