@@ -94,10 +94,11 @@ class OrganizationData extends Component {
     console.log(this.props.data);
     var women_global_ratio = Number(100 - this.props.data.global_male_ratio).toFixed(1);
     var women_director_ratio = Number(100 * this.props.data.direction_female / (this.props.data.direction_female + this.props.data.direction_male)).toFixed(1);
+    var iehg = Number(this.props.data.iehg).toFixed(1);
     return(
       <div className="panel">
         <div className="panel-heading">
-          <h4 className="panel-title">{this.props.orga.name}</h4>
+          <h4 className="panel-title">{this.props.orga.name} (IEHG : {iehg})</h4>
         </div>
         <div className="panel-body">
            <dl className="dl-horizontal text-left">
