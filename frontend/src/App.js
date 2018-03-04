@@ -44,6 +44,18 @@ class App extends Component {
                 </p>
                </div>
              </div>  
+              <div className="card">
+                <div className="card-body">
+                  <h3 className="card-title">Contribuer</h3>
+                  <p className="card-text">
+                    <ul>
+                      <li>Ajouter son organisation</li>
+                      <li>Proposer une mise à jour</li>
+                      <li>Faire évoluer le site</li>
+                    </ul>
+                  </p>
+                </div>
+              </div>
             </div>
             <div className="col-sm-4">
               <h2>Dernières Entrées</h2>
@@ -106,10 +118,10 @@ class OrganizationData extends Component {
         <div className="card-body">
           <h4 className="card-title">{this.props.orga.name} (IEHG : {iehg})</h4>
            <p class="card-text">
-	     <dl className="dl-horizontal text-left">
-               <dt>Part de femmes dans l'effectif global</dt><dd>{women_global_ratio} %</dd>
-               <dt>Part de femmes directeurs</dt><dd>{women_director_ratio} %</dd>
-               <dt>Composition de la direction</dt><dd>{this.props.data.direction_female} femme(s) et {this.props.data.direction_male} hommes</dd>
+	     <dl className="row">
+               <dt className="col-md-6">Part de femmes dans l'effectif global</dt><dd className="col-md-6">{women_global_ratio} %</dd>
+               <dt className="col-md-6">Part de femmes directeurs</dt><dd className="col-md-6">{women_director_ratio} %</dd>
+               <dt className="col-md-6">Composition de la direction</dt><dd className="col-md-6">{this.props.data.direction_female} femme(s) et {this.props.data.direction_male} hommes</dd>
              </dl>
 	   </p>
            <div className="row">
