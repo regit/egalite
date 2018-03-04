@@ -42,6 +42,6 @@
   to { transform: rotate(360deg); }
 }
 
-.card {
+.card, .organizations-list {
    margin-bottom: 10px;
 }

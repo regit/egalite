@@ -5,6 +5,14 @@ import C3Chart from 'react-c3js';
 import logo from './logo.svg';
 import './App.css';
 
+function displayOrgaDataDetail(orga, id) {
+   axios.get('http://192.168.1.129:8081/' + 'api/orgdata/' + id + '/')
+   .then(res => {
+     const orgdata = <OrganizationData data={res.data} orga={orga} />;
+     ReactDOM.render(orgdata, document.getElementById('orga-detail'));
+   });
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +23,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-        axios.get('http://localhost:8080/' + 'api/organization/')
+        axios.get('http://192.168.1.129:8081/' + 'api/organization/')
       .then(res => {
          var orgas = res.data;
          var orga_best = res.data[0];
@@ -71,7 +79,7 @@ class App extends Component {
                 <div className="card-body">
                   <h3 className="card-title">Contribuer</h3>
                   <ul>
-                    <li>Ajouter son organisation</li>
+                    <li>Ajouter une organisation</li>
                     <li>Proposer une mise à jour</li>
                     <li>Faire évoluer le site</li>
                   </ul>
@@ -110,11 +118,7 @@ class Organization extends Component {
   }
 
   handleClick() {
-      axios.get('http://localhost:8080/' + 'api/orgdata/' + this.props.data.latest_data_id)
-      .then(res => {
-        const orgdata = <OrganizationData data={res.data} orga={this.props.data} />;
-        ReactDOM.render(orgdata, document.getElementById('orga-detail'));
-      });
+    return displayOrgaDataDetail(this.props.data, this.props.data.latest_data_id);
   }
 
   render() {
@@ -171,6 +175,7 @@ class DataDonuts extends Component {
 }
 
 class DataInBrief extends Component {
+ 
   render() {
     return(
       <dl className="row">
@@ -179,10 +184,27 @@ class DataInBrief extends Component {
          <dt className="col-md-6">IEHG moyen</dt>
          <dd className="col-md-6">{Number(this.props.iegh_mean).toFixed(1)}</dd>
          <dt className="col-md-6">Pire organisation</dt>
-         <dd className="col-md-6">{this.props.orga_worse.name} avec {Number(this.props.orga_worse.iegh).toFixed(1)}</dd>
+           <OrganizationBrief orga={this.props.orga_worse}/>
          <dt className="col-md-6">Meilleure organisation</dt>
-         <dd className="col-md-6">{this.props.orga_best.name} avec {Number(this.props.orga_best.iegh).toFixed(1)}</dd>
+           <OrganizationBrief orga={this.props.orga_best}/>
        </dl>
+    )
+  }
+}
+
+class OrganizationBrief extends Component {
+  constructor(props) {
+    super(props)
+    this.showDetail = this.showDetail.bind(this);
+  }
+
+  showDetail() {
+    return displayOrgaDataDetail(this.props.orga, this.props.orga.latest_data_id);
+  }
+ 
+  render() {
+    return(
+      <dd className="col-md-6" onClick={this.showDetail} style={{cursor:'pointer'}}>{this.props.orga.name} avec {Number(this.props.orga.iegh).toFixed(1)}</dd>
     )
   }
 }
