@@ -13,13 +13,20 @@ function displayOrgaDataDetail(orga, id) {
    });
 }
 
-class App extends Component {
+function displayHome() {
+  ReactDOM.render(<IEHGIndex />, document.getElementById('root'));
+}
+
+class IEHGIndex extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       organizations: []
     };
+
+    this.addOrga = this.addOrga.bind(this);
+
   }
 
   componentDidMount() {
@@ -52,6 +59,10 @@ class App extends Component {
       });
   }
 
+  addOrga() {
+     ReactDOM.render(<OrganizationForm organizations={this.state.organizations}/>, document.getElementById('root'));
+  }
+
   render() {
     return (
       <div className="App">
@@ -78,11 +89,11 @@ class App extends Component {
               <div className="card">
                 <div className="card-body">
                   <h3 className="card-title">Contribuer</h3>
-                  <ul>
-                    <li>Ajouter une organisation</li>
-                    <li>Proposer une mise à jour</li>
-                    <li>Faire évoluer le site</li>
-                  </ul>
+                    <ul>
+                      <li onClick={this.addOrga} style={{cursor:'pointer'}} >Ajouter une organisation</li>
+                      <li>Proposer une mise à jour</li>
+                      <li>Faire évoluer le site</li>
+                    </ul>
                 </div>
               </div>
             </div>
@@ -209,4 +220,53 @@ class OrganizationBrief extends Component {
   }
 }
 
-export default App;
+class OrganizationForm extends Component {
+   constructor(props) {
+    super(props);
+    this.state = {value: ''};
+    this.orga_name = Array.from(this.props.organizations, x => x.name);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    var color = 'black';
+    if (this.orga_name.indexOf(event.target.value) > -1) {
+      color = 'red'
+    }
+    this.setState({value: event.target.value, color: color});
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">L'égalité c'est maintenant</h1>
+        </header>
+        <h2 className="text-center">Ajouter une organisation</h2>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6 offset-md-3">
+              <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <label>Nom</label>
+                    <input className="form-control" type="text" style={{color: this.state.color}} value={this.state.value} onChange={this.handleChange} id="orga-name"/>
+                </div>
+               <input type="submit" value="Envoyer" /> <input type="button" value="Annuler" onClick={displayHome} />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      )
+    }
+}
+
+export default IEHGIndex;
