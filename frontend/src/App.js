@@ -4,9 +4,10 @@ import axios from 'axios';
 import C3Chart from 'react-c3js';
 import logo from './logo.svg';
 import './App.css';
+import * as config from './config/Api.js';
 
 function displayOrgaDataDetail(orga, id) {
-   axios.get('http://192.168.1.129:8081/' + 'api/orgdata/' + id + '/')
+   axios.get(config.API_URL + config.ORGDATA_PATH + id + '/')
    .then(res => {
      const orgdata = <OrganizationData data={res.data} orga={orga} />;
      ReactDOM.render(orgdata, document.getElementById('orga-detail'));
@@ -20,7 +21,6 @@ function displayHome() {
 class IEHGIndex extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       organizations: []
     };
@@ -30,7 +30,7 @@ class IEHGIndex extends Component {
   }
 
   componentDidMount() {
-        axios.get('http://192.168.1.129:8081/' + 'api/organization/')
+        axios.get(config.API_URL + config.ORGA_PATH)
       .then(res => {
          var orgas = res.data;
          var orga_best = res.data[0];
@@ -138,7 +138,7 @@ class Organization extends Component {
       <div className="organization" onClick={this.handleClick} style={{cursor:'pointer'}}>
         <h5>{this.props.data.name}</h5>
         <div className="progress">
-          <div className="progress-bar" role="progressbar" style={{ width: orga_iegh + '%' }} aria-valuenow="{ orga_iegh}" aria-valuemin="0" aria-valuemax="100">{ orga_iegh }</div>
+          <div className="progress-bar" role="progressbar" style={{ width: orga_iegh + '%' }} aria-valuenow={ orga_iegh} aria-valuemin="0" aria-valuemax="100">{ orga_iegh }</div>
         </div>
       </div>
     )
@@ -240,7 +240,8 @@ class OrganizationForm extends Component {
 
   handleSubmit(event) {
     alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
+    displayHome();
+    //event.preventDefault();
   }
 
   render() {
