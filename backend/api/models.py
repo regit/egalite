@@ -51,7 +51,10 @@ class OrganizationData(models.Model):
         return self.direction_female / (self.direction_female + self.direction_male)
 
     def get_iegh(self):
-        return 100 * (1 - math.sqrt(math.fabs(1 - self.global_male_ratio / 100 - self.get_direction_female_ratio())))
+        if self.pk is not None:
+            return 100 * (1 - math.sqrt(math.fabs(1 - self.global_male_ratio / 100 - self.get_direction_female_ratio())))
+        else:
+            return None
 
     def __unicode__(self):
         return self.organization.name + " " + self.year
