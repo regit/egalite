@@ -23,10 +23,12 @@ class IEHGIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      organizations: []
+      organizations: [],
+      current_orga: undefined
     };
 
     this.addOrga = this.addOrga.bind(this);
+    this.clickOrga = this.clickOrga.bind(this);
 
   }
 
@@ -54,10 +56,14 @@ class IEHGIndex extends Component {
          iegh_mean = iegh_mean / orgas.length;
          orga_worse_iehg = Number(orga_worse_iehg).toFixed(1);
          orga_best_iehg = Number(orga_best_iehg).toFixed(1);
-         this.setState({ organizations: res.data });
+         this.setState({ organizations: res.data, current_orga: orga_worse });
          const gdata = <DataInBrief orga_worse={orga_worse} orga_best={orga_best} orgas_count={orgas.length} iegh_mean={iegh_mean} />;
          ReactDOM.render(gdata, document.getElementById('in-brief'));
       });
+  }
+
+  clickOrga(orga) {
+	this.setState({current_orga: orga});
   }
 
   addOrga() {
@@ -75,7 +81,7 @@ class IEHGIndex extends Component {
         <div className="container-fluid">
           <div className="row">
 	     <div className="col-sm-12">
-	        <p>rajoute ton baratin rajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratin</p>
+	        <p className="text-justify">Les obligations des entreprises en termes d'égalité professionnelle sont désormais inscrites dans la loi et concernent notamment celles qui comptent 50 salariés et plus. Malgré ces nombreuses mesures, la résistance du plafond de verre perdure. En effet, si la « Loi Copé-Zimmermann » fixe un quota obligatoire de 40% du sexe sous-représenté dans les Conseils d'Administration au 1er janvier 2017 dans les entreprises cotées et dans les sociétés comptant plus de 500 salariés, la promotion interne des entreprises n'est pas véritablement encadrée. Or une vraie mixité dans les instances dirigeantes est un enjeu de compétitivité et de performance économique et sociale. Il est en outre important que les femmes et les hommes prennent pleinement conscience des progrès qui restent à accomplir.</p>
 	     </div>
 	  </div>
           <div className="row">
@@ -83,7 +89,7 @@ class IEHGIndex extends Component {
               <div className="card">
                 <div className="card-body">
                 <h3 className="card-title">Qu'est ce que l'IEHG ?</h3>
-          		<a href="https://www.willmcphail.com/about/" target="_blank"><img src={cartoon} className="App-cartoon" alt="cartoon" /></a>
+          		<a href="https://www.willmcphail.com/about/" target="_blank"><img src={cartoon} className="App-cartoon" alt="cartoon" title="Décrivez ce que vous pouvez apporter à cette société." /></a>
                  <p className="card-text text-justify">
                    L'Indice d'Égalité Hiérarchique par Genre (IEHG) est une mesure de l'égalité
                    des chances de promotion au sein d'une organisation. Il mesure l'écart entre
@@ -110,14 +116,17 @@ class IEHGIndex extends Component {
 
               <h3>Indices d'égalité (100 à égalité)</h3>
               <div className="organizations-list">
-                {this.state.organizations.map(function(orga) {
+                {this.state.organizations.map(orga => {
                   return(
-                   <Organization key={orga.pk} data={orga} />
+                   <Organization key={orga.pk} data={orga} onclick={this.clickOrga}/>
                   )
                 })}
               </div>
             </div>
             <div className="col-sm-5 organization-detail" id="orga-detail">
+	        {this.state.current_orga &&
+	    	<OrganizationData orga={this.state.current_orga} />
+		}
             </div>
           </div>
         </div>
@@ -136,7 +145,7 @@ class Organization extends Component {
   }
 
   handleClick() {
-    return displayOrgaDataDetail(this.props.data, this.props.data.latest_data_id);
+    return this.props.onclick(this.props.data);
   }
 
   render() {
@@ -153,21 +162,42 @@ class Organization extends Component {
 }
 
 class OrganizationData extends Component {
+   constructor(props) {
+	   super(props);
+	   this.state = {data: undefined};
+   }
+   componentDidMount() {
+	axios.get(config.API_URL + config.ORGDATA_PATH + this.props.orga.pk + '/')
+   		.then(res => {
+     			this.setState({ data: res.data});
+   	});
+   }
+   componentDidUpdate(prevProps, prevState, snapshot) {
+	axios.get(config.API_URL + config.ORGDATA_PATH + this.props.orga.pk + '/')
+   		.then(res => {
+     			this.setState({ data: res.data});
+   	});
+   }
+
   render() {
-    var women_global_ratio = Number(100 - this.props.data.global_male_ratio).toFixed(1);
-    var men_global_ratio = Number(this.props.data.global_male_ratio).toFixed(1);
-    var women_director_ratio = Number(100 * this.props.data.direction_female / (this.props.data.direction_female + this.props.data.direction_male)).toFixed(1);
-    var iehg = Number(this.props.data.iehg).toFixed(1);
-    var direction_data = {'Homme': this.props.data.direction_male, 'Femme': this.props.data.direction_female};
+	  if (this.state.data) {
+    var women_global_ratio = Number(100 - this.state.data.global_male_ratio).toFixed(1);
+    var men_global_ratio = Number(this.state.data.global_male_ratio).toFixed(1);
+    var women_director_ratio = Number(100 * this.state.data.direction_female / (this.state.data.direction_female + this.state.data.direction_male)).toFixed(1);
+    var iehg = Number(this.state.data.iehg).toFixed(1);
+    var direction_data = {'Homme': this.state.data.direction_male, 'Femme': this.state.data.direction_female};
     var global_data = {'Homme': men_global_ratio, 'Femme': women_global_ratio };
+	  }
     return(
       <div className="card">
         <div className="card-body">
            <h4 className="card-title">{this.props.orga.name} (IEHG : {iehg})</h4>
+	   {this.state.data &&
+	   <React.Fragment>
 	   <dl className="row">
              <dt className="col-md-6">Part de femmes dans l'effectif global</dt><dd className="col-md-6">{women_global_ratio} %</dd>
              <dt className="col-md-6">Part de femmes directeurs</dt><dd className="col-md-6">{women_director_ratio} %</dd>
-             <dt className="col-md-6">Composition de la direction</dt><dd className="col-md-6">{this.props.data.direction_female} femme(s) et {this.props.data.direction_male} hommes</dd>
+             <dt className="col-md-6">Composition de la direction</dt><dd className="col-md-6">{this.state.data.direction_female} femme(s) et {this.state.data.direction_male} hommes</dd>
            </dl>
            <div className="row">
              <div className="col-md" id="global">
@@ -177,7 +207,9 @@ class OrganizationData extends Component {
                <DataDonuts data={direction_data} title='Direction' />
              </div>
            </div>
-           <p style={{'fontSize': '80%'}} className="text-center">Données: année {this.props.data.year}.</p>
+           <p style={{'fontSize': '80%'}} className="text-center">Données: année {this.state.data.year}.</p>
+	   </React.Fragment>
+	   }
         </div>
       </div>
     )
