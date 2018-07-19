@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import C3Chart from 'react-c3js';
 import logo from './logo.svg';
+import cartoon from './images/cartoon.jpg';
 import './App.css';
 import * as config from './config/Api.js';
 
@@ -67,16 +68,22 @@ class IEHGIndex extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">L'égalité c'est maintenant</h1>
+	  <h1 className="App-title">Indice d'Égalité Hiérarchique par Genre</h1>
+          <h2 className="App-title">Quelle est la résistance du plafond de verre?</h2>
         </header>
 
         <div className="container-fluid">
           <div className="row">
-            <div className="col-sm-3">
+	     <div className="col-sm-12">
+	        <p>rajoute ton baratin rajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratinrajoute ton baratin</p>
+	     </div>
+	  </div>
+          <div className="row">
+            <div className="col-sm-4">
               <div className="card">
                 <div className="card-body">
                 <h3 className="card-title">Qu'est ce que l'IEHG ?</h3>
+          		<a href="https://www.willmcphail.com/about/" target="_blank"><img src={cartoon} className="App-cartoon" alt="cartoon" /></a>
                  <p className="card-text text-justify">
                    L'Indice d'Égalité Hiérarchique par Genre (IEHG) est une mesure de l'égalité
                    des chances de promotion au sein d'une organisation. Il mesure l'écart entre
@@ -97,11 +104,11 @@ class IEHGIndex extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-sm-4">
+            <div className="col-sm-3">
               <h2>En bref</h2>
                 <div id="in-brief"></div>
 
-              <h2>Dernières Entrées</h2>
+              <h3>Indices d'égalité (100 à égalité)</h3>
               <div className="organizations-list">
                 {this.state.organizations.map(function(orga) {
                   return(
@@ -137,7 +144,7 @@ class Organization extends Component {
     return (
       <div className="organization" onClick={this.handleClick} style={{cursor:'pointer'}}>
         <h5>{this.props.data.name}</h5>
-        <div className="progress">
+        <div className="progress bg-warning progress-bar-striped">
           <div className="progress-bar" role="progressbar" style={{ width: orga_iegh + '%' }} aria-valuenow={ orga_iegh} aria-valuemin="0" aria-valuemax="100">{ orga_iegh }</div>
         </div>
       </div>

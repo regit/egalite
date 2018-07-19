@@ -15,15 +15,26 @@
   height: 80px;
 }
 
+.App-cartoon {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+}
+
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 100px;
   padding: 20px;
   color: white;
 }
 
-.App-title {
+h1.App-title {
   font-size: 1.5em;
+}
+
+h2.App-title {
+  font-size: 1em;
 }
 
 .App-intro {
