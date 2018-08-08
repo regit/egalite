@@ -19,7 +19,7 @@ Backend
 Easiest way is to run the backend in a virtualenv. So let's create one virtualenv and
 install the dependencies ::
 
- virtualenv env
+ virtualenv -p python3 env
  source env/bin/activate
  pip install -r requirements.txt
 
@@ -40,3 +40,8 @@ You need to install npm deps first ::
 Then you can start the dev server ::
 
  npm run start
+
+Reaching the server
+~~~~~~~~~~~~~~~~~~~
+
+You can now reach the server at http://localhost:8000/
