@@ -36,8 +36,8 @@ class IEHGIndex extends Component {
   componentDidMount() {
         axios.get(config.API_URL + config.ORGA_PATH)
       .then(res => {
-         var orgas = res.data;
-         var orga_best = res.data[0];
+         var orgas = res.data.results;
+         var orga_best = orgas[0];
          var orga_worse = undefined;
          var orga_best_iehg = 0;
          var orga_worse_iehg = 100;
@@ -57,7 +57,7 @@ class IEHGIndex extends Component {
          iegh_mean = iegh_mean / orgas.length;
          orga_worse_iehg = Number(orga_worse_iehg).toFixed(1);
          orga_best_iehg = Number(orga_best_iehg).toFixed(1);
-         this.setState({ organizations: res.data, current_orga: orga_worse });
+         this.setState({ organizations: orgas, current_orga: orga_worse });
          const gdata = <DataInBrief orga_worse={orga_worse} orga_best={orga_best} orgas_count={orgas.length} iegh_mean={iegh_mean} />;
          ReactDOM.render(gdata, document.getElementById('in-brief'));
       });
