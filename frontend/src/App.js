@@ -92,7 +92,7 @@ class IEHGIndex extends Component {
               <div className="card">
                 <div className="card-body">
                 <h3 className="card-title">Qu'est ce que l'IEHG ?</h3>
-          		<a href="https://www.willmcphail.com/about/" target="_blank"><img src={cartoon} className="App-cartoon" alt="cartoon" title="Décrivez ce que vous pouvez apporter à cette société." /></a>
+          		<a href="https://www.willmcphail.com/about/" target="_blank" rel="noopener noreferrer"><img src={cartoon} className="App-cartoon" alt="cartoon" title="Décrivez ce que vous pouvez apporter à cette société." /></a>
                  <p className="card-text text-justify">
                    L'Indice d'Égalité Hiérarchique par Genre (IEHG) est une mesure de l'égalité
                    des chances de promotion au sein d'une organisation. Il mesure l'écart entre
@@ -109,7 +109,7 @@ class IEHGIndex extends Component {
                 <div className="card-body">
                   <h3 className="card-title">Contribuer</h3>
                     <ul>
-                      <li onClick={this.addOrga} style={{cursor:'pointer'}} >Ajouter une organisation</li>
+                      <li>Ajouter une organisation</li>
                       <li>Proposer une mise à jour</li>
                       <li>Faire évoluer le site</li>
                     </ul>
@@ -179,10 +179,12 @@ class OrganizationData extends Component {
    	});
    }
    componentDidUpdate(prevProps, prevState, snapshot) {
-	axios.get(config.API_URL + config.ORGDATA_PATH + this.props.orga.pk + '/')
-   		.then(res => {
+	if (this.props.orga.pk !== prevProps.orga.pk) {
+		axios.get(config.API_URL + config.ORGDATA_PATH + this.props.orga.pk + '/')
+   			.then(res => {
      			this.setState({ data: res.data});
-   	});
+   		});
+	}
    }
 
   render() {
