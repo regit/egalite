@@ -44,8 +44,8 @@ h2.App-title {
 .App-footer {
   margin-top: 30px;
   text-align: center;
-  text-width: 100%;
   font-size: 80%;
+  padding: 30px 0px;
 }
 
 @keyframes App-logo-spin {
@@ -55,4 +55,35 @@ h2.App-title {
 
 .card, .organizations-list {
    margin-bottom: 10px;
+}
+
+.pagination {
+  width: 100%;
+  margin: 30px 0 0 0;
+  padding: 0;
+  display: block;
+}
+.pagination li {
+  list-style: none;
+  display: inline-block;
+}
+.pagination li a {
+  display: block;
+  padding: 5px 15px;
+  font-size: 16px;
+  background: #5aaaff;
+  color: #FFF;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin: 2px;
+  text-decoration: none;
+  text-shadow: 0 1px #000;
+}
+.pagination li a:hover {
+  text-decoration: none;
+  background-color: #429dff;
+}
+.pagination li a.active {
+  background-color: #007bff;
 }
