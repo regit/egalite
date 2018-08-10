@@ -1,6 +1,6 @@
 // file: src/util/ApiClient.js
 import axios from 'axios';
-import store from '../store';
+import store from '../configureStore';
 import { URL } from '../config/Api';
 
 export const apiClient = function() {

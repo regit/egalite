@@ -1,7 +1,7 @@
 // file: src/util/Auth.js
 import axios from 'axios';
 import _ from 'lodash';
-import store from '../store';
+import store from '../configureStore';
 import { setToken } from '../actions'
 import { URL, LOGIN } from '../config/Api';
 
